@@ -1,1 +1,88 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jouluinen Raaputusarpa</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-image: 'jouluarpa.png'; /* Korvaa tämä URL haluamallasi jouluisella kuvalla */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
 
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        p {
+            font-size: 1.2em;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+        }
+
+        canvas {
+            margin: 20px auto;
+            border: 2px solid #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+        }
+
+        #result {
+            font-size: 1.5em;
+            margin-top: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+    </style>
+</head>
+<body>
+    <h1>Jouluinen Raaputusarpa</h1>
+    <p>Raaputa arpa nähdäksesi, oletko voittanut 150 euroa.</p>
+    <canvas id="scratchCard" width="300" height="200"></canvas>
+    <p id="result" style="font-weight: bold;"></p>
+
+    <script>
+        const canvas = document.getElementById('scratchCard');
+        const ctx = canvas.getContext('2d');
+        const result = document.getElementById('result');
+
+        // Täytetään canvas harmaalla värillä
+        ctx.fillStyle = 'gray';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Palkintoalue
+        const prize = 'Onneksi olkoon! Voitit 150 euroa!';
+        let isScratched = false;
+
+        // Näytetään viesti, kun tarpeeksi on raaputettu
+        const checkScratch = () => {
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            let scratchedPixels = 0;
+            for (let i = 0; i < imageData.data.length; i += 4) {
+                if (imageData.data[i + 3] === 0) scratchedPixels++;
+            }
+            if (scratchedPixels / (canvas.width * canvas.height) > 0.5 && !isScratched) {
+                isScratched = true;
+                result.textContent = prize;
+            }
+        };
+
+        // Kuuntelee raaputustoimintaa
+        canvas.addEventListener('mousemove', (e) => {
+            if (e.buttons !== 1) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            ctx.clearRect(x - 10, y - 10, 20, 20);
+            checkScratch();
+        });
+    </script>
+</body>
+</html>
