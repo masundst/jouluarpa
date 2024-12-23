@@ -16,32 +16,55 @@
         }
 
         h1 {
-            font-size: 2.5em;
+            font-size: 2em;
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
         }
 
         p {
-            font-size: 1.2em;
+            font-size: 1em;
+            margin: 10px 0;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
         }
 
         canvas {
             margin: 20px auto;
-            width: 600px;
-            height: 400px;
-            diplay: block;
+            width: 90%; /* Skaalaa leveydeltään 90% mobiililaitteilla */
+            max-width: 600px; /* Maksimileveys */
+            height: auto; /* Korkeus suhteessa leveyteen */
+            aspect-ratio: 3 / 2; /* Suhdeluku 3:2 */
+            display: block;
             border: 2px solid #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             cursor: pointer;
-            background: url('scratch_card_with_background_and_texts_fixed.png') no-repeat center center; /* Aseta taustakuva */
-            background-size: cover; /* Skaalataan taustakuva */
+            background: url('scratchcard.png') no-repeat center center; /* Raaputusalueen taustakuva */
+            background-size: cover;
         }
 
         #result {
-            font-size: 1.5em;
-            margin-top: 20px;
+            font-size: 1.2em;
+            margin-top: 15px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Media queries mobiililaitteille */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            p {
+                font-size: 0.9em;
+            }
+
+            canvas {
+                width: 100%; /* Skaalaa koko ruudun leveydelle */
+                margin: 10px 0;
+            }
+
+            #result {
+                font-size: 1em;
+            }
         }
     </style>
 </head>
