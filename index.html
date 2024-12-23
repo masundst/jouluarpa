@@ -8,7 +8,7 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background: url('jouluarpa.png') no-repeat center center fixed; /* Yleinen taustakuva */
+            background: url('jouluarpa.png') no-repeat center center fixed;
             background-size: cover;
             text-align: center;
             padding: 20px;
@@ -69,7 +69,7 @@
 </head>
 <body>
     <h1>Jouluinen Raaputusarpa</h1>
-    <p>Raaputa arpa nähdäksesi, oletko voittanut.</p>
+    <p>Raaputa arpa nähdäksesi, oletko voittanut!</p>
     <canvas id="scratchCard" width="600" height="400"></canvas>
     <p id="result" style="font-weight: bold;"></p>
 
@@ -86,12 +86,40 @@
         const prize = 'Onneksi olkoon, voitit!';
         let isScratched = false;
 
-        // Tarkistetaan, onko tarpeeksi raaputettu
+        // Korjattu koordinaattien laskeminen
+        const getRelativeCoordinates = (event) => {
+            const rect = canvas.getBoundingClientRect();
+            let clientX, clientY;
+
+            if (event.touches) {
+                // Kosketusnäytön koordinaatit
+                clientX = event.touches[0].clientX;
+                clientY = event.touches[0].clientY;
+            } else {
+                // Hiiren koordinaatit
+                clientX = event.clientX;
+                clientY = event.clientY;
+            }
+
+            // Lasketaan suhteelliset koordinaatit canvas-alueeseen
+            const x = ((clientX - rect.left) / rect.width) * canvas.width;
+            const y = ((clientY - rect.top) / rect.height) * canvas.height;
+
+            return { x, y };
+        };
+
+        // Funktio raaputukseen
+        const scratch = (x, y) => {
+            ctx.clearRect(x - 10, y - 10, 20, 20); // Raaputettava alue
+            checkScratch();
+        };
+
+        // Tarkistaa, onko tarpeeksi raaputettu
         const checkScratch = () => {
             const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
             let scratchedPixels = 0;
             for (let i = 0; i < imageData.data.length; i += 4) {
-                if (imageData.data[i + 3] === 0) scratchedPixels++;
+                if (imageData.data[i + 3] === 0) scratchedPixels++; // Läpinäkyvät pikselit
             }
             if (scratchedPixels / (canvas.width * canvas.height) > 0.6 && !isScratched) {
                 isScratched = true;
@@ -99,28 +127,17 @@
             }
         };
 
-        // Funktio raaputukseen (yleinen hiirelle ja kosketukselle)
-        const scratch = (x, y) => {
-            ctx.clearRect(x - 10, y - 10, 20, 20); // Raaputettava alue
-            checkScratch();
-        };
-
         // Hiiren tapahtumat
         canvas.addEventListener('mousemove', (e) => {
-            if (e.buttons !== 1) return; // Varmistaa, että hiiren vasen nappi on painettuna
-            const rect = canvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+            if (e.buttons !== 1) return;
+            const { x, y } = getRelativeCoordinates(e);
             scratch(x, y);
         });
 
         // Kosketusnäyttöjen tapahtumat
         canvas.addEventListener('touchmove', (e) => {
-            e.preventDefault(); // Estää sivun vierityksen
-            const rect = canvas.getBoundingClientRect();
-            const touch = e.touches[0];
-            const x = touch.clientX - rect.left;
-            const y = touch.clientY - rect.top;
+            e.preventDefault();
+            const { x, y } = getRelativeCoordinates(e);
             scratch(x, y);
         });
     </script>
