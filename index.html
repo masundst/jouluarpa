@@ -46,8 +46,8 @@
     </style>
 </head>
 <body>
-    <h1>Jouluinen Raaputusarpa</h1>
-    <p>Raaputa kolme samaa rahamäärää voittaaksesi sen.</p>
+    <h1>Jouluinen raaputusarpa</h1>
+    <p>Raaputa kolme samaa rahamäärää voittaaksesi.</p>
     <canvas id="scratchCard" width="600" height="400"></canvas>
     <p id="result" style="font-weight: bold;"></p>
 
@@ -61,7 +61,7 @@
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         // Palkintoalue
-        const prize = 'Onneksi olkoon! Voitit 100 euroa!';
+        const prize = 'Onneksi olkoon, voitit!';
         let isScratched = false;
 
         // Tarkistaa, onko tarpeeksi raaputettu
@@ -71,7 +71,7 @@
             for (let i = 0; i < imageData.data.length; i += 4) {
                 if (imageData.data[i + 3] === 0) scratchedPixels++;
             }
-            if (scratchedPixels / (canvas.width * canvas.height) > 0.5 && !isScratched) {
+            if (scratchedPixels / (canvas.width * canvas.height) > 0.6 && !isScratched) {
                 isScratched = true;
                 result.textContent = prize;
             }
