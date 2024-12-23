@@ -29,15 +29,15 @@
 
         canvas {
             margin: 20px auto;
-            width: 90%; /* Skaalaa leveydeltään 90% mobiililaitteilla */
-            max-width: 600px; /* Maksimileveys */
-            height: auto; /* Korkeus suhteessa leveyteen */
-            aspect-ratio: 3 / 2; /* Suhdeluku 3:2 */
+            width: 90%;
+            max-width: 600px;
+            height: auto;
+            aspect-ratio: 3 / 2;
             display: block;
             border: 2px solid #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             cursor: pointer;
-            background: url('scratchcard.png') no-repeat center center; /* Raaputusalueen taustakuva */
+            background: url('scratchcard.png') no-repeat center center;
             background-size: cover;
         }
 
@@ -47,7 +47,6 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
         }
 
-        /* Media queries mobiililaitteille */
         @media (max-width: 768px) {
             h1 {
                 font-size: 1.8em;
@@ -58,7 +57,7 @@
             }
 
             canvas {
-                width: 100%; /* Skaalaa koko ruudun leveydelle */
+                width: 100%;
                 margin: 10px 0;
             }
 
@@ -69,8 +68,8 @@
     </style>
 </head>
 <body>
-    <h1>Jouluinen raaputusarpa</h1>
-    <p>Raaputa kolme samaa rahamäärää voittaaksesi.</p>
+    <h1>Jouluinen Raaputusarpa</h1>
+    <p>Raaputa arpa nähdäksesi, oletko voittanut.</p>
     <canvas id="scratchCard" width="600" height="400"></canvas>
     <p id="result" style="font-weight: bold;"></p>
 
@@ -79,7 +78,7 @@
         const ctx = canvas.getContext('2d');
         const result = document.getElementById('result');
 
-        // Peitetään canvas harmaalla värillä
+        // Piirretään harmaa raaputuspinta
         ctx.fillStyle = 'gray';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -87,7 +86,7 @@
         const prize = 'Onneksi olkoon, voitit!';
         let isScratched = false;
 
-        // Tarkistaa, onko tarpeeksi raaputettu
+        // Tarkistetaan, onko tarpeeksi raaputettu
         const checkScratch = () => {
             const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
             let scratchedPixels = 0;
@@ -100,14 +99,29 @@
             }
         };
 
-        // Kuuntelee raaputustoimintaa
+        // Funktio raaputukseen (yleinen hiirelle ja kosketukselle)
+        const scratch = (x, y) => {
+            ctx.clearRect(x - 10, y - 10, 20, 20); // Raaputettava alue
+            checkScratch();
+        };
+
+        // Hiiren tapahtumat
         canvas.addEventListener('mousemove', (e) => {
-            if (e.buttons !== 1) return;
+            if (e.buttons !== 1) return; // Varmistaa, että hiiren vasen nappi on painettuna
             const rect = canvas.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
-            ctx.clearRect(x - 10, y - 10, 20, 20);
-            checkScratch();
+            scratch(x, y);
+        });
+
+        // Kosketusnäyttöjen tapahtumat
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault(); // Estää sivun vierityksen
+            const rect = canvas.getBoundingClientRect();
+            const touch = e.touches[0];
+            const x = touch.clientX - rect.left;
+            const y = touch.clientY - rect.top;
+            scratch(x, y);
         });
     </script>
 </body>
