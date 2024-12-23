@@ -47,7 +47,7 @@
 </head>
 <body>
     <h1>Jouluinen Raaputusarpa</h1>
-    <p>Raaputa arpa nähdäksesi, oletko voittanut 150 euroa.</p>
+    <p>Raaputa kolme samaa rahamäärää voittaaksesi sen.</p>
     <canvas id="scratchCard" width="600" height="400"></canvas>
     <p id="result" style="font-weight: bold;"></p>
 
@@ -61,7 +61,7 @@
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         // Palkintoalue
-        const prize = 'Onneksi olkoon! Voitit 150 euroa!';
+        const prize = 'Onneksi olkoon! Voitit 100 euroa!';
         let isScratched = false;
 
         // Tarkistaa, onko tarpeeksi raaputettu
