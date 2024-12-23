@@ -8,11 +8,7 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-image: url('jouluarpa.png'); /* Vaihda sopivaan taustakuvaan */
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            color: white;
+            background-color: #dcecf3;
             text-align: center;
             padding: 20px;
         }
@@ -30,9 +26,13 @@
 
         canvas {
             margin: 20px auto;
+            width: 600px;
+            height: 400px;
             border: 2px solid #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             cursor: pointer;
+            background: url('scratch_card_with_background_and_texts_fixed.png') no-repeat center center; /* Aseta taustakuva */
+            background-size: cover; /* Skaalataan taustakuva */
         }
 
         #result {
@@ -45,7 +45,7 @@
 <body>
     <h1>Jouluinen Raaputusarpa</h1>
     <p>Raaputa arpa nähdäksesi, oletko voittanut 150 euroa.</p>
-    <canvas id="scratchCard" width="300" height="200"></canvas>
+    <canvas id="scratchCard" width="600" height="400"></canvas>
     <p id="result" style="font-weight: bold;"></p>
 
     <script>
@@ -53,7 +53,7 @@
         const ctx = canvas.getContext('2d');
         const result = document.getElementById('result');
 
-        // Täytetään canvas harmaalla värillä
+        // Peitetään canvas harmaalla värillä
         ctx.fillStyle = 'gray';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -61,7 +61,7 @@
         const prize = 'Onneksi olkoon! Voitit 150 euroa!';
         let isScratched = false;
 
-        // Näytetään viesti, kun tarpeeksi on raaputettu
+        // Tarkistaa, onko tarpeeksi raaputettu
         const checkScratch = () => {
             const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
             let scratchedPixels = 0;
